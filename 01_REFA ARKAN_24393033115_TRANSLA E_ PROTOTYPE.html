@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Sehati - E-commerce</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 2em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Page Content */
+        .page {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home Page */
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        /* Login Form */
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            height: 200px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4em;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ee5a24;
+            margin-bottom: 15px;
+        }
+
+        /* Cart */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e1e1e1;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid #e1e1e1;
+            border-radius: 25px;
+            font-size: 16px;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="nav">
+                <div class="logo">🏪 Toko Sehati</div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showPage('home')">Home</button>
+                    <button class="btn btn-secondary" onclick="showPage('products')">Produk</button>
+                    <button class="btn btn-secondary" onclick="showPage('cart')">Keranjang (<span id="cart-count">0</span>)</button>
+                    <button class="btn btn-secondary" onclick="showPage('orders')">Pesanan</button>
+                    <button class="btn btn-primary" onclick="showPage('login')" id="login-btn">Login</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="hero">
+                <h1>Selamat Datang di Toko Sehati</h1>
+                <p>Toko online terpercaya untuk makanan basah dan kering berkualitas. Belanja mudah, pengiriman cepat, dan pelayanan terbaik untuk keluarga Indonesia.</p>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🥘</div>
+                    <h3>Makanan Berkualitas</h3>
+                    <p>Produk makanan basah dan kering pilihan dengan kualitas terjamin dan harga terjangkau</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚚</div>
+                    <h3>Pengiriman Cepat</h3>
+                    <p>Layanan pengiriman yang cepat dan aman langsung ke rumah Anda</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💳</div>
+                    <h3>Pembayaran Mudah</h3>
+                    <p>Berbagai pilihan metode pembayaran yang aman dan terpercaya</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Page -->
+        <div id="login" class="page">
+            <div class="login-form">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Login</h2>
+                <div class="form-group">
+                    <label>Email atau Username</label>
+                    <input type="text" id="username" placeholder="Masukkan email atau username">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Masukkan password">
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="login()">Login</button>
+                <p style="text-align: center; margin-top: 20px; color: #666;">
+                    Belum punya akun? <a href="#" style="color: #667eea;">Daftar disini</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Products Page -->
+        <div id="products" class="page">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Katalog Produk</h2>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Cari produk..." id="search-input">
+                <button class="search-btn">🔍</button>
+            </div>
+
+            <div class="product-grid" id="product-grid">
+                <div class="product-card">
+                    <div class="product-image">🍜</div>
+                    <div class="product-info">
+                        <div class="product-title">Mie Instan Premium</div>
+                        <div class="product-price">Rp 15.000</div>
+                        <button class="btn btn-primary" onclick="addToCart('Mie Instan Premium', 15000)">Tambah ke Keranjang</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🍚</div>
+                    <div class="product-info">
+                        <div class="product-title">Beras Premium 5kg</div>
+                        <div class="product-price">Rp 75.000</div>
+                        <button class="btn btn-primary" onclick="addToCart('Beras Premium 5kg', 75000)">Tambah ke Keranjang</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🥫</div>
+                    <div class="product-info">
+                        <div class="product-title">Sarden Kaleng</div>
+                        <div class="product-price">Rp 12.000</div>
+                        <button class="btn btn-primary" onclick="addToCart('Sarden Kaleng', 12000)">Tambah ke Keranjang</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🍪</div>
+                    <div class="product-info">
+                        <div class="product-title">Biskuit Cokelat</div>
+                        <div class="product-price">Rp 8.000</div>
+                        <button class="btn btn-primary" onclick="addToCart('Biskuit Cokelat', 8000)">Tambah ke Keranjang</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🧄</div>
+                    <div class="product-info">
+                        <div class="product-title">Bumbu Dapur Lengkap</div>
+                        <div class="product-price">Rp 25.000</div>
+                        <button class="btn btn-primary" onclick="addToCart('Bumbu Dapur Lengkap', 25000)">Tambah ke Keranjang</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🥤</div>
+                    <div class="product-info">
+                        <div class="product-title">Minuman Ringan 6 Pack</div>
+                        <div class="product-price">Rp 30.000</div>
+                        <button class="btn btn-primary" onclick="addToCart('Minuman Ringan 6 Pack', 30000)">Tambah ke Keranjang</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Page -->
+        <div id="cart" class="page">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Keranjang Belanja</h2>
+            <div id="cart-items">
+                <p style="text-align: center; color: #666; margin: 50px 0;">Keranjang belanja kosong</p>
+            </div>
+            <div id="cart-total-section" style="display: none;">
+                <div class="cart-total">
+                    Total: <span id="total-price">Rp 0</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="checkout()">Checkout</button>
+            </div>
+        </div>
+
+        <!-- Orders Page -->
+        <div id="orders" class="page">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Riwayat Pesanan</h2>
+            <div id="orders-list">
+                <p style="text-align: center; color: #666; margin: 50px 0;">Belum ada pesanan. <a href="#" onclick="showPage('products')" style="color: #667eea;">Mulai berbelanja</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let orders = [];
+        let isLoggedIn = false;
+        let orderCounter = 1;
+
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username && password) {
+                isLoggedIn = true;
+                document.getElementById('login-btn').textContent = 'Logout';
+                document.getElementById('login-btn').onclick = logout;
+                alert('Login berhasil! Selamat datang di Toko Sehati.');
+                showPage('home');
+            } else {
+                alert('Mohon lengkapi username dan password.');
+            }
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            document.getElementById('login-btn').textContent = 'Login';
+            document.getElementById('login-btn').onclick = () => showPage('login');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            alert('Logout berhasil.');
+            showPage('home');
+        }
+
+        function addToCart(productName, price) {
+            if (!isLoggedIn) {
+                alert('Silakan login terlebih dahulu untuk menambahkan produk ke keranjang.');
+                showPage('login');
+                return;
+            }
+
+            const existingItem = cart.find(item => item.name === productName);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: productName,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            
+            updateCartDisplay();
+            alert(`${productName} berhasil ditambahkan ke keranjang!`);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartDisplay();
+        }
+
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) {
+                removeFromCart(index);
+            } else {
+                updateCartDisplay();
+            }
+        }
+
+        function updateCartDisplay() {
+            const cartItemsDiv = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const totalSection = document.getElementById('cart-total-section');
+            const totalPrice = document.getElementById('total-price');
+            
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p style="text-align: center; color: #666; margin: 50px 0;">Keranjang belanja kosong</p>';
+                totalSection.style.display = 'none';
+                cartCount.textContent = '0';
+                return;
+            }
+            
+            let html = '';
+            let total = 0;
+            let totalItems = 0;
+            
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                totalItems += item.quantity;
+                
+                html += `
+                    <div class="cart-item">
+                        <div>
+                            <div class="product-title">${item.name}</div>
+                            <div class="product-price">Rp ${item.price.toLocaleString()} x ${item.quantity}</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="updateQuantity(${index}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="btn btn-secondary" style="padding: 5px 10px;" onclick="updateQuantity(${index}, 1)">+</button>
+                            <button class="btn" style="background: #dc3545; color: white; padding: 5px 10px;" onclick="removeFromCart(${index})">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartItemsDiv.innerHTML = html;
+            totalPrice.textContent = `Rp ${total.toLocaleString()}`;
+            cartCount.textContent = totalItems;
+            totalSection.style.display = 'block';
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Keranjang belanja kosong.');
+                return;
+            }
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const order = {
+                id: `ORD-${orderCounter.toString().padStart(3, '0')}`,
+                items: [...cart],
+                total: total,
+                date: new Date().toLocaleDateString('id-ID'),
+                status: 'pending'
+            };
+            
+            orders.push(order);
+            orderCounter++;
+            cart = [];
+            updateCartDisplay();
+            updateOrdersDisplay();
+            
+            alert(`Pesanan berhasil dibuat dengan ID: ${order.id}\nTotal: Rp ${total.toLocaleString()}\n\nTerima kasih telah berbelanja di Toko Sehati!`);
+            showPage('orders');
+        }
+
+        function updateOrdersDisplay() {
+            const ordersDiv = document.getElementById('orders-list');
+            
+            if (orders.length === 0) {
+                ordersDiv.innerHTML = '<p style="text-align: center; color: #666; margin: 50px 0;">Belum ada pesanan. <a href="#" onclick="showPage(\'products\')" style="color: #667eea;">Mulai berbelanja</a></p>';
+                return;
+            }
+            
+            let html = '';
+            orders.forEach(order => {
+                const statusClass = order.status === 'pending' ? 'status-pending' : 'status-confirmed';
+                const statusText = order.status === 'pending' ? 'Menunggu Konfirmasi' : 'Dikonfirmasi';
+                
+                html += `
+                    <div class="cart-item">
+                        <div>
+                            <div class="product-title">Pesanan ${order.id}</div>
+                            <div style="color: #666; margin: 5px 0;">${order.date}</div>
+                            <div class="product-price">Total: Rp ${order.total.toLocaleString()}</div>
+                            <div style="margin-top: 10px;">
+                                ${order.items.map(item => `${item.name} (${item.quantity}x)`).join(', ')}
+                            </div>
+                        </div>
+                        <div>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            ordersDiv.innerHTML = html;
+        }
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const productCards = document.querySelectorAll('.product-card');
+            
+            productCards.forEach(card => {
+                const title = card.querySelector('.product-title').textContent.toLowerCase();
+                if (title.includes(searchTerm) || searchTerm === '') {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Initialize
+        updateCartDisplay();
+        updateOrdersDisplay();
+    </script>
+</body>
+</html>
